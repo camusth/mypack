@@ -1,0 +1,152 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mypack}
+
+
+%---------------%
+%--- OPTIONS ---%
+%---------------%
+
+\newif\if@algo              \@algofalse
+\newif\if@english           \@englishfalse                  
+
+\DeclareOption{algo}{\@algotrue}
+\DeclareOption{english}{\@englishtrue}
+
+\ProcessOptions
+
+%----------------%
+%--- PACKAGES ---%
+%----------------%
+
+% Packages manager 
+\RequirePackage{etex}     
+
+% Encoding packages
+\RequirePackage[utf8]{inputenc}                        
+\RequirePackage[T1]{fontenc} 
+\RequirePackage{lmodern}
+
+% Maths packages
+\RequirePackage{amsthm, amsmath, amssymb}
+\RequirePackage{tensor}                                
+\RequirePackage[all,dvips]{xy}
+\RequirePackage{mathrsfs}                               
+\RequirePackage{cases}                 
+\RequirePackage{array}
+\RequirePackage{faktor}		%	for quotients
+\RequirePackage{mathrsfs}	% add mathscr (another cal math)
+\RequirePackage{bm}
+\RequirePackage{textcomp}
+
+% Style packages
+\RequirePackage{colortbl}
+\RequirePackage{graphicx}                           
+\RequirePackage{caption}
+\RequirePackage{pifont}
+\RequirePackage{tikz-cd}
+
+% Other packages
+\RequirePackage{multicol}
+
+\if@algo
+    \RequirePackage[nokwfunc, french, lined, longend]{algorithm2e}
+    \SetKwSty{bfseries}
+    \SetAlCapSkip{1em}
+    \SetAlFnt{\ttfamily}
+    \SetCommentSty{gray} 
+\fi
+
+\if@english
+    \RequirePackage[english]{babel}
+\else
+    \RequirePackage[frenchb]{babel}
+\fi
+
+%----------------%
+%--- COMMANDS ---%
+%----------------%
+
+% avoid error unknown char
+\DeclareUnicodeCharacter{00A0}{ }
+
+% never cut formula
+\binoppenalty=\maxdimen
+\relpenalty=\maxdimen                 
+
+\usepackage[sans]{dsfont}
+% mathbf commands
+\newcommand{\Bb}{\mathds}
+\newcommand{\CC}{\Bb{C}} 
+\newcommand{\GG}{\Bb{G}} 
+\newcommand{\LL}{\Bb{L}} 
+\newcommand{\NN}{\Bb{N}} 
+\newcommand{\PP}{\Bb{P}} 
+\newcommand{\QQ}{\Bb{Q}} 
+\newcommand{\RR}{\Bb{R}} 
+\newcommand{\VV}{\Bb{V}} 
+\newcommand{\ZZ}{\Bb{Z}} 
+
+% macros
+\DeclareMathOperator{\Vect}{Vect} 	% Vect
+\DeclareMathOperator{\Span}{Span} 	% Span
+\DeclareMathOperator{\M}{M}					% M
+\DeclareMathOperator{\GL}{GL} 			% GL
+\DeclareMathOperator{\SL}{SL}				% SL
+\DeclareMathOperator{\Her}{H}				% H
+\DeclareMathOperator{\Sym}{S}				% S
+\DeclareMathOperator{\Ort}{O}				% O
+\DeclareMathOperator{\Uni}{U}				% U
+\DeclareMathOperator{\mat}{mat} 		% mat
+\DeclareMathOperator{\Ker}{Ker}			% Ker
+\DeclareMathOperator{\Img}{Im}			% Im
+\DeclareMathOperator{\Coker}{Coker}	% Coker
+\DeclareMathOperator{\Tr}{Tr}				% Tr
+\DeclareMathOperator{\Aut}{Aut}			% Aut
+\DeclareMathOperator{\codim}{codim}	% codim 
+\DeclareMathOperator{\Hom}{Hom}			% Hom
+\DeclareMathOperator{\Diag}{Diag}		% Diag
+\DeclareMathOperator{\I}{I}					% I
+\DeclareMathOperator{\End}{End}			% End
+\DeclareMathOperator{\Stab}{Stab}		% End
+
+\newcommand{\matr}[2]{\operatorname{M}_{#1}(#2)} 		
+\newcommand{\genlin}[2]{\operatorname{GL}_{#1}(#2)} 
+\newcommand{\spelin}[2]{\operatorname{SL}_{#1}(#2)}
+
+\newcommand{\scalar}[2]{\langle #1 \, | \, #2 \rangle} % dot product
+
+% ZNZ commands
+\newcommand{\znz}[1]{\mathbb{Z}/#1\mathbb{Z}}
+\newcommand{\znzx}[1]{\left(\znz{#1}\right)^\times}
+
+\newcommand{\fonction}[5]{\begin{array}[t]{cccc} % full function          
+#1: & #2 & \longrightarrow & #3 \\
+    & #4 & \longmapsto & #5 \end{array}}               
+\newcommand{\sfonction}[3]{#1: #2 \longrightarrow #3} % small function
+\newcommand{\fonctionnoname}[4]{\begin{array}[t]{ccc} % full function without name     
+#1 & \longrightarrow & #2 \\
+#3 & \longmapsto & #4 \end{array}}  
+
+% line command
+\newcommand{\HRule}{\rule{\linewidth}{0.1mm}}
+
+% rename mathcal in cal
+\renewcommand{\cal}{\mathcal}
+
+% style of <= and >=
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+\DeclareMathOperator{\Exists}{\exists} % exists with more space
+\DeclareMathOperator{\Forall}{\forall} % forall with more space
+
+\newenvironment{wideenumerate}{\enumerate\addtolength{\itemsep}{2ex}}{\endenumerate}
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{2ex}}{\enditemize}
+
+%color commands
+\newcommand{\red}[1]{\textcolor{DarkRed}{#1}}
+\newcommand{\blue}[1]{\textcolor{DarkBlue}{#1}}
+\newcommand{\green}[1]{\textcolor{DarkGreen}{#1}}
+\newcommand{\pink}[1]{\textcolor{DarkMagenta}{#1}}
+
+\endinput
