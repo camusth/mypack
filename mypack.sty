@@ -1,0 +1,375 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mypack}
+
+%***************%
+%*** OPTIONS ***%
+%***************%
+
+\newif\if@lmodern			\@lmodernfalse
+\newif\if@libertine			\@libertinefalse
+\newif\if@times             \@timesfalse
+\newif\if@monospace             \@monospacefalse
+\newif\if@fourier			\@fourierfalse
+\newif\if@newpxtext		\@newpxtextfalse
+\newif\if@charter		\@charterfalse
+\newif\if@mathpazo	\@mathpazofalse
+\newif\if@nocolorlinks      \@nocolorlinksfalse
+\newif\if@english           \@englishfalse                  
+
+\DeclareOption{lmodern}{\@lmoderntrue}
+\DeclareOption{libertine}{\@libertinetrue}
+\DeclareOption{times}{\@timestrue}
+\DeclareOption{fourier}{\@fouriertrue}
+\DeclareOption{monospace}{\@monospacetrue}
+\DeclareOption{newpxtext}{\@newpxtexttrue}
+\DeclareOption{charter}{\@chartertrue}
+\DeclareOption{mathpazo}{\@mathpazotrue}
+\DeclareOption{nocolorlinks}{\@nocolorlinkstrue}
+\DeclareOption{english}{\@englishtrue}
+\ProcessOptions
+
+\RequirePackage{etex} % packages manager
+
+%*******************%
+%*** TYPROGRAPHY ***%
+%*******************%
+\if@libertine
+	\RequirePackage[mono=false]{libertine} % libertine
+	\RequirePackage{sourcesanspro}
+\fi
+
+\if@lmodern
+	\RequirePackage{lmodern} % lmodern font
+\fi
+
+\if@monospace
+	\RequirePackage{amsmath, amsthm, amssymb} % ams
+	\RequirePackage{ccfonts}
+	\RequirePackage[scaled]{helvet} 
+\fi
+
+\if@times
+	\RequirePackage{amsmath, amsthm, amssymb} % ams
+	\RequirePackage{newtxtext}	% times font
+\fi
+
+\if@fourier
+	\RequirePackage{amsmath, amsthm, amssymb} % ams
+	\RequirePackage{fourier}
+	\RequirePackage{sourcesanspro}
+	%\RequirePackage{eucal}	% custom mathcal
+\fi
+
+\if@newpxtext
+	\RequirePackage{amsmath, amsthm, amssymb} % ams
+	\RequirePackage{newpxtext, newpxmath}
+\fi
+
+\if@charter
+	\RequirePackage{amsmath, amsthm, amssymb} % ams
+	\RequirePackage{charter}
+	\RequirePackage[expert]{mathdesign}
+	\RequirePackage{sourcesanspro}
+\fi
+
+\if@mathpazo
+	\RequirePackage{amsmath, amsthm, amssymb} % ams
+	\RequirePackage{mathpazo} % math & rm
+	\linespread{1.05}    
+	\RequirePackage{sourcesanspro}
+\fi
+
+%*******************%
+%*** MATHEMATICS ***%
+%*******************%
+
+\RequirePackage{amsmath, amsthm, amssymb} % ams
+\RequirePackage{bm} % bold mathematics
+\RequirePackage{thmtools} % customize thm environments                                
+\RequirePackage[all]{xy} % diagram 
+\RequirePackage{cases} % provide numcases environment                 
+\RequirePackage{array} % extented array and tabular environment
+\RequirePackage{blkarray}	% block array
+\RequirePackage{faktor} % quotients
+\RequirePackage{mathrsfs}	% add mathscr (another cal math)
+
+% style for thm, prop, corol, def and lemma
+\newtheoremstyle{thmstyle}  
+  {}          		    % ABOVESPACE (empty value is the usual one)
+  {}          		    % BELOWSPACE (empty value is the usual one)
+  {\itshape}      	  % BODYFONT
+  {}    		          % INDENT (empty value is the same as 0pt)
+  {\bfseries}     		% HEADFONT
+  {~}              	  % HEADPUNCT
+  { }  	        		  % HEADSPACE. `plain` default: {5pt plus 1pt minus 1pt}
+  {}              		% CUSTOM-HEAD-SPEC
+\theoremstyle{thmstyle}
+\if@english
+    \declaretheorem[name=Theorem,numberwithin=section]{theo}
+    \declaretheorem[name=Proposition,sibling=theo]{prop}
+    \declaretheorem[name=Lemma,sibling=theo]{lem}
+    \declaretheorem[name=Corollary,sibling=theo]{cor}
+    \declaretheorem[name=Definition,sibling=theo]{defi}
+\else
+    \declaretheorem[name=Théorème, numberwithin=section]{theo}
+    \declaretheorem[name=Proposition,sibling=theo]{prop}
+    \declaretheorem[name=Lemme,sibling=theo]{lem}
+    \declaretheorem[name=Corollaire,sibling=theo]{cor}
+    \declaretheorem[name=Définition,sibling=theo]{defi}
+\fi
+
+% style for rem and ex
+\newtheoremstyle{remstyle}
+  {}          		    % ABOVESPACE (empty value is the usual one)
+  {}          		    % BELOWSPACE (empty value is the usual one)
+  {}      		        % BODYFONT
+  {}    		          % INDENT (empty value is the same as 0pt)
+  {\bfseries}     		% HEADFONT
+  {~}              	  % HEADPUNCT
+  { }  	        		  % HEADSPACE. `plain` default: {5pt plus 1pt minus 1pt}
+  {}              		% CUSTOM-HEAD-SPEC
+\theoremstyle{remstyle}
+\if@english
+    \declaretheorem[name=Remark,sibling=theo]{rem}
+    \declaretheorem[name=Example,sibling=theo]{ex}
+\else
+    \declaretheorem[name=Remarque,sibling=theo]{rem}
+    \declaretheorem[name=Exemple,sibling=theo]{ex}
+\fi
+
+\expandafter\let\expandafter\oldproof\csname\string\proof\endcsname % placing qed symbol
+\let\oldendproof\endproof
+\renewenvironment{proof}[1][\proofname]{
+  \oldproof[\normalfont \bfseries #1]
+}{\oldendproof}
+
+\if@english
+	\RequirePackage[nokwfunc, linesnumbered, vlined, ruled]{algorithm2e} % provide algorithm environment
+\else
+	\RequirePackage[nokwfunc, french, linesnumbered, vlined, ruled]{algorithm2e} % provide algorithm environment
+\fi
+\SetKwSty{bfseries} % keyword font
+\SetAlCapSkip{1em}  % caption spacing
+\SetAlFnt{\ttfamily}  % core font
+\SetAlCapFnt{\sffamily} % caption font
+\SetCommentSty{gray} % comment font
+\SetArgSty{ttfamily} % arg font
+\renewcommand{\@endalgocfline}{\relax} % custom eol
+
+\usepackage{bbm}
+% mathbf commands
+\newcommand{\Bbf}{\mathbb}
+\newcommand{\FF}{\Bbf{F}}
+\newcommand{\CC}{\Bbf{C}} 
+\newcommand{\GG}{\Bbf{G}} 
+\newcommand{\LL}{\Bbf{L}} 
+\newcommand{\NN}{\Bbf{N}} 
+\newcommand{\PP}{\Bbf{P}} 
+\newcommand{\QQ}{\Bbf{Q}} 
+\newcommand{\RR}{\Bbf{R}} 
+\newcommand{\VV}{\Bbf{V}} 
+\newcommand{\ZZ}{\Bbf{Z}} 
+\newcommand{\KK}{\Bbf{K}} 
+
+% macros
+\DeclareMathOperator{\Vect}{Vect} 	% Vect
+\DeclareMathOperator{\Span}{Span} 	% Span
+\DeclareMathOperator{\M}{M}					% M
+\DeclareMathOperator{\GL}{GL} 			% GL
+\DeclareMathOperator{\SL}{SL}				% SL
+\DeclareMathOperator{\Her}{H}				% H
+\DeclareMathOperator{\Sym}{S}				% S
+\DeclareMathOperator{\Ort}{O}				% O
+\DeclareMathOperator{\Uni}{U}				% U
+\DeclareMathOperator{\mat}{mat} 		% mat
+\DeclareMathOperator{\Ker}{Ker}			% Ker
+\DeclareMathOperator{\Img}{Im}			% Im
+\DeclareMathOperator{\Coker}{Coker}	% Coker
+\DeclareMathOperator{\Tr}{Tr}				% Tr
+\DeclareMathOperator{\Aut}{Aut}			% Aut
+\DeclareMathOperator{\codim}{codim}	% codim 
+\DeclareMathOperator{\Hom}{Hom}			% Hom
+\DeclareMathOperator{\Diag}{Diag}		% Diag
+\DeclareMathOperator{\I}{I}					% I
+\DeclareMathOperator{\End}{End}			% End
+\DeclareMathOperator{\Cl}{Cl}				% Cl
+\DeclareMathOperator{\N}{N}					% N
+
+\newcommand{\znz}[1]{\ZZ/#1\ZZ} % Z/nZ
+\newcommand{\znzx}[1]{\left(\znz{#1}\right)^\times} % (Z/nZ)^x
+
+\newcommand{\matr}[2]{\operatorname{M}_{#1}(#2)} % M_m(K) 		
+\newcommand{\genlin}[2]{\operatorname{GL}_{#1}(#2)} % G_m(K)
+\newcommand{\spelin}[2]{\operatorname{SL}_{#1}(#2)} % SL_m(K)
+\newcommand{\sym}[2]{\operatorname{S}_{#1}(#2)} % S_m(K)
+\newcommand{\herm}[2]{\operatorname{H}_{#1}(#2)} % H_m(K)
+
+
+\newcommand{\fonction}[5]{\begin{array}[t]{cccc} % full function          
+#1: & #2 & \longrightarrow & #3 \\
+    & #4 & \longmapsto & #5 \end{array}}               
+\newcommand{\sfonction}[3]{#1: #2 \longrightarrow #3} % small function
+\newcommand{\fonctionnoname}[4]{\begin{array}[t]{ccc} % full function without name     
+#1 & \longrightarrow & #2 \\
+#3 & \longmapsto & #4 \end{array}}  
+
+\newcommand{\scalar}[2]{\langle #1 \, | \, #2 \rangle} % dot product
+
+\renewcommand{\cal}{\mathcal} % rename mathcal in cal
+
+\renewcommand{\epsilon}{\varepsilon}	% replace epsilon by varepsilon
+
+\renewcommand{\leq}{\leqslant} % style of leq
+\renewcommand{\geq}{\geqslant} % style of geq
+
+\DeclareMathOperator{\Exists}{\exists} % exists with more space
+\DeclareMathOperator{\Forall}{\forall} % forall with more space
+
+%****************%
+%*** LANGUAGE ***%
+%****************%
+
+\if@english
+    \RequirePackage[english]{babel}
+    \renewcommand{\matrix}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\else
+    \RequirePackage[frenchb]{babel}
+    \renewcommand{\matrix}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+		\AtBeginDocument{\renewcommand\tablename{Tab}}
+\fi
+
+%***************%
+%*** DRAWING ***%
+%***************%
+
+\RequirePackage{colortbl} % add colour to tables                        
+\RequirePackage[usenames,dvipsnames,svgnames]{xcolor} % provide access to more colour 
+\RequirePackage{pstricks-add} % addons and bugfixes for pstricks                       
+\RequirePackage{graphicx} % including picture                           
+\RequirePackage[section]{placeins} % avoid moving between section floats, provide /FloatBarrier
+\RequirePackage{float} % provide the H option for floats
+\RequirePackage{tikz-cd} % commutative diagramms
+\usetikzlibrary{shapes, snakes, arrows}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.1mm}} % line 
+
+%*************%
+%*** STYLE ***%
+%*************%
+
+\RequirePackage{sectsty} % custom headings                          
+\RequirePackage{titlesec} % custom sections                        
+
+\titlelabel{\thetitle~~~} % title spacing 
+\chapterfont{\centering}  % chapter are centered
+\allsectionsfont{\sffamily\bfseries}  % sections font
+
+\RequirePackage[a4paper, margin=2cm]{geometry} % page format  
+\RequirePackage{fancyhdr} % custom headers and footers
+\RequirePackage{multicol} % provide multicol environment
+\RequirePackage{todonotes} % provide todo environment
+\RequirePackage[bookmarksopen=true]{hyperref} % handle cross-ref
+\RequirePackage[style=alphabetic, backend=bibtex, hyperref=true, backref=true, sorting=nyt, firstinits=true]{biblatex} 
+\RequirePackage{enumerate} % improve enumerate environment 
+\RequirePackage{mdframed}	% for drawing boxes around text and math
+
+\DefineBibliographyStrings{french}{%
+backrefpage = {voir p\adddot},%
+backrefpages = {voir pp.\adddot},%
+}
+
+\if@nocolorlinks
+    \hypersetup{  % links are not colored
+        colorlinks=false, 
+        citebordercolor=Mahogany, 
+        linkbordercolor=DarkBlue,
+        urlbordercolor=DarkBlue
+    }
+\else
+    \hypersetup{ % links are colored (default)
+        colorlinks=true,  
+        citecolor=Mahogany, 
+        linkcolor=DarkBlue, 
+        urlcolor=DarkBlue
+    } 
+\fi
+
+\RequirePackage[font=sf]{caption} % captions
+
+\addto\captionsfrench{\renewcommand{\figurename}{\bf\sf{Fig.}}} % captions start by Fig.
+\renewcommand{\thefigure}{\arabic{figure}}  % captions numbering              
+
+\renewenvironment{abstract}{ % abstrat style 
+\hfill\begin{minipage}{0.95\columnwidth}
+\rule{\textwidth}{0.5pt}}
+{\par\noindent\rule{\columnwidth}{0.5pt}\end{minipage}}
+
+% modify autoref name
+\renewcommand{\subsubsectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Section}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\algorithmautorefname}{Algorithme}
+
+\addto\extrasenglish{
+	\renewcommand{\subsubsectionautorefname}{Section}
+	\renewcommand{\subsectionautorefname}{Section}
+	\renewcommand{\sectionautorefname}{Section}
+	\renewcommand{\algorithmautorefname}{Algorithm}
+}
+
+\newcommand{\itemb}{\item[\gray{$\bullet$}]} % bullet for item
+
+% switch between rightmark and leftmark for fancyhdr
+\makeatletter
+\newcommand{\rightorleftmark}{%
+  \begingroup\protected@edef\x{\rightmark}%
+  \ifx\x\@empty
+    \endgroup\leftmark
+  \else
+    \endgroup\rightmark
+  \fi}
+\makeatother
+
+\binoppenalty=\maxdimen % never cut formula
+\relpenalty=\maxdimen
+
+\DeclareUnicodeCharacter{00A0}{~} % avoid error unknown char
+
+% BIBLATEX %
+\DefineBibliographyStrings{french}{%
+backrefpage = {{}}{{}},%
+backrefpages = {{}}{{}},%
+}
+% macro pageref qui pilote l'apparence des pages contenant les références
+\renewbibmacro*{pageref}{%
+\iflistundef{pageref}
+{}
+{% \printtext[brackets]{ ligne initiale avec parenthèses
+\printtext[brackets]{% ligne corrigée avec crochets
+\ifnumgreater{\value{pageref}}{1}
+{\bibstring{backrefpages}}
+{\bibstring{backrefpage}}%
+\printlist[pageref][-\value{listtotal}]{pageref}}}} 
+
+
+\renewbibmacro*{begentry}{%
+  \par
+  \renewcommand{\arraystretch}{1.5}
+  \tabular{@{}p{.1\textwidth}p{.7\textwidth}p{.2\textwidth}@{}}
+     \raggedright\noindent\baselineskip=9pt\printfield[labelalphawidth]{labelalpha}
+    & \raggedright\parindent=2em\hangindent=0em\noindent\clearlist{pageref}
+}
+\renewbibmacro*{finentry}{%
+  \finentry
+  & \usebibmacro{pageref}
+  \endtabular
+}
+
+\defbibenvironment{tablebib}
+  {\setlength{\parindent}{0pt}}
+  {}
+  {}
+
+
+
+\endinput
